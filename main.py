@@ -2,10 +2,15 @@ from sympy import symbols, expand, simplify, diff, integrate, latex
 from sympy import init_printing
 from IPython.display import display, Math
 import math
-from math import radians, cos, sqrt, atan, sin
+from math import radians, cos, sqrt, atan, sin, degrees
+
 
 def kerek(szam):
     return round(szam, 6)
+
+def kiir(var):
+    var_name = [name for name, val in locals().items() if val is var][0]
+    print(f"{var_name} = {round(var,4)}")
 
 
 d = 0.02
@@ -29,7 +34,6 @@ omega = 28
 pi = math.pi
 g = 9.81
 
-
 # =================== 1. FELADAT ================ #
 print("1. FELADAT\n")
 m_1 = ro * ((d**2 * pi )/4 * (l_1 + l_2))
@@ -39,6 +43,7 @@ G_1 = m_1 * g
 G_2 = m_2 *g
 
 theta_A = m_1 * (0.25* (d/2)**2 + (1/12)*(l_1 + l_2)**2) + m_1 * ((l_1+l_2) / 2)**2 + m_2 * (0.25 * (d/2)**2 + (1/12) *(l_3 + l_4)**2) + m_2 * (((l_3+l_4)/2)**2)
+print(latex(theta_A))
 print(f"m_1 = {round(m_1,4)} [kg]")
 print(f"m_2 = {round(m_2,4)} [kg]")
 print(f"G_1 = {round(G_1,4)} [N]")
@@ -57,11 +62,10 @@ m_34 = (l_3 + l_4) * (((d**2)*pi)/4) * ro
 print(f"m_12 = {kerek(m_12)} [kg]")
 print(f"m_34 = {kerek(m_34)} [kg]")
 
-
 omega_n = sqrt((k_2*l_1**2 + k_1*l_3**2 +k_t + m_12 * g * (l_1 + l_2) *0.5) / theta_A)
 print(f"omega_n = {kerek(omega_n)} [rad/s]")
 
-# relatív csillapítási tényező
+
 
 zeta = (c_1 * (l_3 + l_4)**2 / (2* theta_A * omega_n))
 
@@ -88,6 +92,9 @@ c_S = (c_t1 * m_red1 + ct_2n * m_red2) / (m_red1 + m_red2)
 v_S = c_S
 v_t1 = (1+e) * v_S
 
+v_sn = v_S + v_S*e
+omega_t = v_sn / (l_1 + l_2)
+
 fipont_0 = -v_t1 / AT
 omega_t1 = fipont_0
 
@@ -113,14 +120,13 @@ omega_d = omega_n * math.sqrt(1-zeta**2)
 
 lambda_1 = omega / omega_n
 N = sqrt((1-lambda_1**2)**2 + 4*zeta**2 * lambda_1**2)**-1
-f_0 = (F_0 * l_3) / (theta_A * omega_n**2)
-#f_0 = (-k_2 * l_3 * r_0) / (theta_A * omega_n**2)
+f_0 = (k_1*l_3 * r_0) / (theta_A * omega_n**2)
 fi = N*f_0
 kisthetavesszo = atan((2*zeta*lambda_1) / (1- lambda_1**2))
 kistheta = kisthetavesszo + pi
 
-C_1 = fi* sin(kistheta)
-C_2 = (fipont_0 + zeta * omega_n * C_1 - fi*omega*cos(-kistheta) / omega_d)
+C_1 = -fi* sin(kistheta)
+C_2 = -(omega_t + zeta *omega_n * C_1 - fi * omega * cos(-kistheta)) / omega_d
 
 print(f"omega_d = {kerek(omega_d)} [rad/s]\n")
 print(f"lambda = {kerek(lambda_1)} [-]")
