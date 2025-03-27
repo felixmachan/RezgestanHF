@@ -2,10 +2,10 @@ from sympy import symbols, expand, simplify, diff, integrate, latex
 from sympy import init_printing
 from IPython.display import display, Math
 import math
-from math import radians, cos
+from math import radians, cos, sqrt, atan, sin
 
 def kerek(szam):
-    return round(szam, 4)
+    return round(szam, 6)
 
 
 d = 0.02
@@ -51,8 +51,14 @@ print("\n")
 
 # csillapítatlan sajátkörfrekvencia
 
-omega_n = math.sqrt((G_1 * (0.5*l_1 + 0.5*l_2) + k_1 * l_1**2 + k_2 * l_3**2 + k_t) / theta_A)
+m_12 = (l_1 + l_2) * (((d**2)*pi)/4) * ro
+m_34 = (l_3 + l_4) * (((d**2)*pi)/4) * ro
 
+print(f"m_12 = {kerek(m_12)} [kg]")
+print(f"m_34 = {kerek(m_34)} [kg]")
+
+
+omega_n = sqrt((k_2*l_1**2 + k_1*l_3**2 +k_t + m_12 * g * (l_1 + l_2) *0.5) / theta_A)
 print(f"omega_n = {kerek(omega_n)} [rad/s]")
 
 # relatív csillapítási tényező
@@ -66,14 +72,15 @@ print("\n")
 # --------------------- 4. FELADAT ------------------#
 print("4. FELADAT\n")
 c_t1 = 0
+radian = 30 * pi / 180
 AT = l_1 + l_2
-FT = l_3 * math.cos(radians(30))
+FT = l_3 * cos(radian)
 
-theta_F = m*l_3
+theta_F = m*l_3**2
 m_red1 = theta_A / (AT**2)
 m_red2 = theta_F / (FT**2)
 
-omega_2 = math.sqrt((2*m*g*l_3*math.cos(radians(30))) / theta_F)
+omega_2 = math.sqrt((2*m*g*l_3*cos(radian)) / theta_F)
 ct_2 = omega_2 * l_3
 ct_2n = omega_2 * FT
 
@@ -105,15 +112,15 @@ print("5. FELADAT\n")
 omega_d = omega_n * math.sqrt(1-zeta**2)
 
 lambda_1 = omega / omega_n
-N = math.sqrt((1-lambda_1**2)**2 + 4*zeta**2 * lambda_1**2)**-1
+N = sqrt((1-lambda_1**2)**2 + 4*zeta**2 * lambda_1**2)**-1
 f_0 = (F_0 * l_3) / (theta_A * omega_n**2)
 #f_0 = (-k_2 * l_3 * r_0) / (theta_A * omega_n**2)
 fi = N*f_0
-kisthetavesszo = math.atan((2*zeta*lambda_1) / 1- lambda_1**2)
+kisthetavesszo = atan((2*zeta*lambda_1) / (1- lambda_1**2))
 kistheta = kisthetavesszo + pi
 
-C_1 = fi* math.sin(kistheta)
-C_2 = (fipont_0 + zeta * omega_n * C_1 - fi*omega*math.cos(-kistheta) / omega_d)
+C_1 = fi* sin(kistheta)
+C_2 = (fipont_0 + zeta * omega_n * C_1 - fi*omega*cos(-kistheta) / omega_d)
 
 print(f"omega_d = {kerek(omega_d)} [rad/s]\n")
 print(f"lambda = {kerek(lambda_1)} [-]")
