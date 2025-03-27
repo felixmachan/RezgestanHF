@@ -1,6 +1,3 @@
-from sympy import symbols, expand, simplify, diff, integrate, latex
-from sympy import init_printing
-from IPython.display import display, Math
 import math
 from math import radians, cos, sqrt, atan, sin, degrees
 
