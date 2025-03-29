@@ -1,14 +1,13 @@
+from sympy import symbols, expand, simplify, diff, integrate, latex
 import math
-from math import radians, cos, sqrt, atan, sin, degrees
+from math import radians, cos, sqrt, atan, sin, degrees, log
+
 
 
 def kerek(szam):
     return round(szam, 6)
 
-def kiir(var):
-    var_name = [name for name, val in locals().items() if val is var][0]
-    print(f"{var_name} = {round(var,4)}")
-
+# =================== ADATOK ================== #
 
 d = 0.02
 ro = 7800
@@ -51,7 +50,6 @@ print("\n")
 
 # ----------------- 2. FELADAT ----------------- #
 
-# csillapítatlan sajátkörfrekvencia
 
 m_12 = (l_1 + l_2) * (((d**2)*pi)/4) * ro
 m_34 = (l_3 + l_4) * (((d**2)*pi)/4) * ro
@@ -69,6 +67,35 @@ zeta = (c_1 * (l_3 + l_4)**2 / (2* theta_A * omega_n))
 print(f"zeta = {kerek(zeta)} [-]")
 print("\n")
 
+# ----------------- 3. FELADAT ----------------- #
+
+print("3. FELADAT\n")
+n = 1
+A_1 = 1
+A_n1 = 0.43
+
+
+logdek = (1/n)*log(A_1 / A_n1)
+zeta_becs =(logdek / (sqrt(4*pi**2 + logdek**2)))
+T = 0.57
+
+
+
+omega_dbecs = (2*pi) / T
+omega_becs = omega_dbecs / (sqrt(1-zeta_becs**2))
+
+H_zeta =   100* math.fabs((zeta - zeta_becs) / zeta)
+H_omega =  100* math.fabs((omega_n - omega_becs)) / omega_n
+
+print(f"logdek = {kerek(logdek)} [-]")
+print(f"zeta_becs = {kerek(zeta_becs)} [-]")
+print(f"omega_dbecs = {kerek(omega_dbecs)} [rad/s]")
+print(f"omega_becs = {kerek(omega_becs)} [rad/s]")
+
+print(f"H_zeta = {kerek(H_zeta)} [%]")
+print(f"H_omega = {kerek(H_omega)} [%]")
+
+print("\n")
 
 # --------------------- 4. FELADAT ------------------#
 print("4. FELADAT\n")
@@ -134,4 +161,8 @@ print(f"theta' = {kerek(kisthetavesszo)} [rad]")
 print(f"theta = {kerek(kistheta)} [rad]")
 print(f"C_1 = {kerek(C_1)} [rad]")
 print(f"C_2 = {kerek(C_2)} [rad]")
+
+
+
+
 
